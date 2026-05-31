@@ -1,0 +1,668 @@
+{
+  "schemaVersion": 1,
+  "categories": [
+    {
+      "id": "languages",
+      "name": { "en": "Languages", "zh": "编程语言" },
+      "description": { "en": "Compilers, runtimes, SDKs, and language version managers.", "zh": "编译器、运行时、SDK 和语言版本管理器。" },
+      "icon": "code"
+    },
+    {
+      "id": "frameworks",
+      "name": { "en": "Frameworks", "zh": "框架" },
+      "description": { "en": "Frontend, backend, and full-stack frameworks.", "zh": "前端、后端和全栈框架。" },
+      "icon": "blocks"
+    },
+    {
+      "id": "package-managers",
+      "name": { "en": "Package Managers", "zh": "包管理器" },
+      "description": { "en": "Language and system package managers.", "zh": "语言和系统包管理器。" },
+      "icon": "package"
+    },
+    {
+      "id": "editors",
+      "name": { "en": "Editors", "zh": "编辑器" },
+      "description": { "en": "Code editors and IDE launchers.", "zh": "代码编辑器和 IDE 启动器。" },
+      "icon": "monitor"
+    },
+    {
+      "id": "containers",
+      "name": { "en": "Containers", "zh": "容器" },
+      "description": { "en": "Containers, local Kubernetes, and registry tooling.", "zh": "容器、本地 Kubernetes 和镜像仓库工具。" },
+      "icon": "container"
+    },
+    {
+      "id": "databases",
+      "name": { "en": "Databases", "zh": "数据库" },
+      "description": { "en": "Relational, document, cache, and embedded databases.", "zh": "关系型、文档型、缓存和嵌入式数据库。" },
+      "icon": "database"
+    },
+    {
+      "id": "devops",
+      "name": { "en": "DevOps", "zh": "DevOps" },
+      "description": { "en": "Build, release, automation, and infrastructure tools.", "zh": "构建、发布、自动化和基础设施工具。" },
+      "icon": "terminal"
+    },
+    {
+      "id": "cloud",
+      "name": { "en": "Cloud", "zh": "云工具" },
+      "description": { "en": "Cloud CLIs and platform SDKs.", "zh": "云 CLI 和平台 SDK。" },
+      "icon": "cloud"
+    },
+    {
+      "id": "mobile",
+      "name": { "en": "Mobile", "zh": "移动端" },
+      "description": { "en": "Mobile SDKs and device toolchains.", "zh": "移动端 SDK 和设备工具链。" },
+      "icon": "smartphone"
+    },
+    {
+      "id": "ai-data",
+      "name": { "en": "AI & Data", "zh": "AI 与数据" },
+      "description": { "en": "Data science, notebooks, GPU, and ML tooling.", "zh": "数据科学、Notebook、GPU 和机器学习工具。" },
+      "icon": "brain"
+    }
+  ],
+  "items": [
+    {
+      "id": "rust",
+      "category": "languages",
+      "name": { "en": "Rust", "zh": "Rust" },
+      "summary": { "en": "Rust toolchain through rustup.", "zh": "通过 rustup 安装 Rust 工具链。" },
+      "homepage": "https://www.rust-lang.org/tools/install",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "compiler", "rustup"],
+      "versions": [
+        { "id": "stable", "label": "stable", "default": true },
+        { "id": "beta", "label": "beta" },
+        { "id": "nightly", "label": "nightly" }
+      ],
+      "sources": [
+        { "kind": "official", "url": "https://www.rust-lang.org/tools/install" },
+        { "kind": "mirror", "url": "https://mirrors.ustc.edu.cn/rust-static/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "rustc", "args": ["--version"], "sourceHint": "rustup/PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "rustup-windows",
+          "platforms": ["windows"],
+          "kind": "download",
+          "title": { "en": "Download and run rustup-init.exe", "zh": "下载并运行 rustup-init.exe" },
+          "url": "https://win.rustup.rs/x86_64",
+          "mirrorUrl": "https://mirrors.ustc.edu.cn/rust-static/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe",
+          "checksum": "official rustup release signature or SHA256",
+          "command": "rustup-init.exe",
+          "args": ["-y", "--default-toolchain", "stable"],
+          "source": "official",
+          "permissions": { "requiresAdmin": false, "reason": { "en": "Installs into the user profile.", "zh": "安装到当前用户目录。" } }
+        },
+        {
+          "id": "rustup-unix",
+          "platforms": ["macos", "linux"],
+          "kind": "command",
+          "title": { "en": "Run official rustup installer", "zh": "运行官方 rustup 安装脚本" },
+          "url": "https://sh.rustup.rs",
+          "mirrorUrl": "https://mirrors.ustc.edu.cn/rust-static/rustup/rustup-init.sh",
+          "checksum": "official rustup release signature or SHA256",
+          "command": "sh",
+          "args": ["-c", "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"],
+          "source": "official",
+          "permissions": { "requiresAdmin": false, "reason": { "en": "Installs into the user profile.", "zh": "安装到当前用户目录。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "PATH",
+          "action": "append",
+          "value": "$HOME/.cargo/bin",
+          "backupHint": { "en": "Back up the shell profile before modifying PATH.", "zh": "修改 PATH 前备份 shell profile。" },
+          "rollback": { "en": "Remove $HOME/.cargo/bin from PATH.", "zh": "从 PATH 中移除 $HOME/.cargo/bin。" }
+        }
+      ]
+    },
+    {
+      "id": "nodejs",
+      "category": "languages",
+      "name": { "en": "Node.js", "zh": "Node.js" },
+      "summary": { "en": "JavaScript runtime with npm; prefers official installers or official version managers.", "zh": "JavaScript 运行时和 npm；优先官方安装器或官方版本管理方式。" },
+      "homepage": "https://nodejs.org/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["javascript", "runtime", "npm"],
+      "versions": [
+        { "id": "22", "label": "22 LTS", "default": true },
+        { "id": "24", "label": "24 Current" }
+      ],
+      "sources": [
+        { "kind": "official", "url": "https://nodejs.org/en/download" },
+        { "kind": "mirror", "url": "https://npmmirror.com/mirrors/node/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "node", "args": ["--version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "node-windows",
+          "platforms": ["windows"],
+          "kind": "download",
+          "title": { "en": "Download official Windows MSI", "zh": "下载官方 Windows MSI" },
+          "url": "https://nodejs.org/dist/latest-v22.x/node-v22.x-x64.msi",
+          "mirrorUrl": "https://npmmirror.com/mirrors/node/latest-v22.x/node-v22.x-x64.msi",
+          "checksum": "SHASUMS256.txt from nodejs.org",
+          "command": "msiexec",
+          "args": ["/i", "node-v22.x-x64.msi", "/passive"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "MSI installs system-wide.", "zh": "MSI 会安装到系统范围。" } }
+        },
+        {
+          "id": "node-unix",
+          "platforms": ["macos", "linux"],
+          "kind": "download",
+          "title": { "en": "Download official tarball", "zh": "下载官方 tarball" },
+          "url": "https://nodejs.org/dist/latest-v22.x/node-v22.x-linux-x64.tar.xz",
+          "mirrorUrl": "https://npmmirror.com/mirrors/node/latest-v22.x/node-v22.x-linux-x64.tar.xz",
+          "checksum": "SHASUMS256.txt from nodejs.org",
+          "command": "tar",
+          "args": ["-xf", "node-v22.x-linux-x64.tar.xz"],
+          "source": "official",
+          "permissions": { "requiresAdmin": false, "reason": { "en": "Can install into a user-owned tool directory.", "zh": "可安装到用户拥有的工具目录。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "PATH",
+          "action": "append",
+          "value": "$ELVPATH_TOOLS/node/bin",
+          "backupHint": { "en": "Back up PATH before adding Node.js.", "zh": "添加 Node.js 前备份 PATH。" },
+          "rollback": { "en": "Remove the ElvPath Node.js bin directory from PATH.", "zh": "从 PATH 中移除 ElvPath Node.js bin 目录。" }
+        }
+      ]
+    },
+    {
+      "id": "python",
+      "category": "languages",
+      "name": { "en": "Python", "zh": "Python" },
+      "summary": { "en": "Python runtime with pip and virtual environment support.", "zh": "Python 运行时，包含 pip 和虚拟环境支持。" },
+      "homepage": "https://www.python.org/downloads/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "pip", "venv"],
+      "versions": [
+        { "id": "3.12", "label": "3.12", "default": true },
+        { "id": "3.13", "label": "3.13" }
+      ],
+      "sources": [
+        { "kind": "official", "url": "https://www.python.org/downloads/" },
+        { "kind": "mirror", "url": "https://mirrors.huaweicloud.com/python/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "python", "args": ["--version"], "sourceHint": "PATH" },
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "python3", "args": ["--version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "python-windows",
+          "platforms": ["windows"],
+          "kind": "download",
+          "title": { "en": "Download official Python installer", "zh": "下载官方 Python 安装器" },
+          "url": "https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe",
+          "mirrorUrl": "https://mirrors.huaweicloud.com/python/3.12.0/python-3.12.0-amd64.exe",
+          "checksum": "python.org release checksum",
+          "command": "python-3.12.0-amd64.exe",
+          "args": ["/quiet", "InstallAllUsers=0", "PrependPath=1"],
+          "source": "official",
+          "permissions": { "requiresAdmin": false, "reason": { "en": "Uses per-user install mode.", "zh": "使用当前用户安装模式。" } }
+        },
+        {
+          "id": "python-unix",
+          "platforms": ["macos", "linux"],
+          "kind": "package-manager",
+          "title": { "en": "Install Python from trusted system repository", "zh": "从可信系统仓库安装 Python" },
+          "url": "https://www.python.org/downloads/source/",
+          "mirrorUrl": "https://mirrors.huaweicloud.com/python/",
+          "checksum": "system repository signature",
+          "command": "python3",
+          "args": ["--version"],
+          "source": "package-manager",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "System repository installation needs sudo/polkit.", "zh": "系统仓库安装需要 sudo/polkit。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "pip config",
+          "action": "set",
+          "value": "index-url=https://pypi.org/simple or selected mirror",
+          "backupHint": { "en": "Back up pip.conf or pip.ini before changing indexes.", "zh": "修改源前备份 pip.conf 或 pip.ini。" },
+          "rollback": { "en": "Restore previous pip index settings.", "zh": "恢复之前的 pip 源配置。" }
+        }
+      ]
+    },
+    {
+      "id": "git",
+      "category": "devops",
+      "name": { "en": "Git", "zh": "Git" },
+      "summary": { "en": "Distributed version control system.", "zh": "分布式版本控制系统。" },
+      "homepage": "https://git-scm.com/downloads",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["vcs", "cli"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [
+        { "kind": "official", "url": "https://git-scm.com/downloads" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "git", "args": ["--version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "git-official",
+          "platforms": ["windows", "macos", "linux"],
+          "kind": "download",
+          "title": { "en": "Install Git from official distribution", "zh": "从官方发行安装 Git" },
+          "url": "https://git-scm.com/downloads",
+          "mirrorUrl": "https://registry.npmmirror.com/binary.html?path=git-for-windows/",
+          "checksum": "official release checksum or package signature",
+          "command": "git",
+          "args": ["--version"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "System-wide installation may modify PATH.", "zh": "系统级安装可能修改 PATH。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "PATH",
+          "action": "append",
+          "value": "Git command directory",
+          "backupHint": { "en": "Back up PATH before adding Git.", "zh": "添加 Git 前备份 PATH。" },
+          "rollback": { "en": "Remove Git command directory from PATH.", "zh": "从 PATH 中移除 Git 命令目录。" }
+        }
+      ]
+    },
+    {
+      "id": "docker",
+      "category": "containers",
+      "name": { "en": "Docker", "zh": "Docker" },
+      "summary": { "en": "Docker Desktop or Docker Engine for container development.", "zh": "用于容器开发的 Docker Desktop 或 Docker Engine。" },
+      "homepage": "https://docs.docker.com/get-docker/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["container", "desktop", "engine"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [
+        { "kind": "official", "url": "https://docs.docker.com/get-docker/" },
+        { "kind": "mirror", "url": "https://mirrors.tuna.tsinghua.edu.cn/docker-ce/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "docker", "args": ["--version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": ["git"],
+      "installSteps": [
+        {
+          "id": "docker-desktop",
+          "platforms": ["windows", "macos"],
+          "kind": "download",
+          "title": { "en": "Install Docker Desktop", "zh": "安装 Docker Desktop" },
+          "url": "https://www.docker.com/products/docker-desktop/",
+          "mirrorUrl": "https://desktop.docker.com/",
+          "checksum": "Docker Desktop release signature",
+          "command": "Docker Desktop Installer",
+          "args": ["install", "--quiet"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "Installs services, networking, and virtualization components.", "zh": "会安装服务、网络和虚拟化组件。" } }
+        },
+        {
+          "id": "docker-engine-linux",
+          "platforms": ["linux"],
+          "kind": "package-manager",
+          "title": { "en": "Install Docker Engine from official repository", "zh": "从官方仓库安装 Docker Engine" },
+          "url": "https://docs.docker.com/engine/install/",
+          "mirrorUrl": "https://mirrors.tuna.tsinghua.edu.cn/docker-ce/",
+          "checksum": "repository GPG signature",
+          "command": "docker",
+          "args": ["--version"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "Adds system packages, service units, and docker group membership.", "zh": "会添加系统包、服务单元和 docker 用户组。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "Docker daemon config",
+          "action": "write-file",
+          "value": "registry-mirrors optional",
+          "backupHint": { "en": "Back up daemon.json before changing registry mirrors.", "zh": "修改镜像加速前备份 daemon.json。" },
+          "rollback": { "en": "Restore previous Docker daemon configuration.", "zh": "恢复之前的 Docker daemon 配置。" }
+        }
+      ]
+    },
+    {
+      "id": "vscode",
+      "category": "editors",
+      "name": { "en": "VS Code", "zh": "VS Code" },
+      "summary": { "en": "Microsoft Visual Studio Code editor.", "zh": "Microsoft Visual Studio Code 编辑器。" },
+      "homepage": "https://code.visualstudio.com/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["editor", "ide"],
+      "versions": [{ "id": "stable", "label": "stable", "default": true }, { "id": "insiders", "label": "insiders" }],
+      "sources": [
+        { "kind": "official", "url": "https://code.visualstudio.com/Download" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "code", "args": ["--version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "vscode-official",
+          "platforms": ["windows", "macos", "linux"],
+          "kind": "download",
+          "title": { "en": "Download VS Code stable", "zh": "下载 VS Code 稳定版" },
+          "url": "https://code.visualstudio.com/Download",
+          "mirrorUrl": "https://vscode.cdn.azure.cn/stable/",
+          "checksum": "Microsoft release signature",
+          "command": "code",
+          "args": ["--version"],
+          "source": "official",
+          "permissions": { "requiresAdmin": false, "reason": { "en": "Can install per-user on supported platforms.", "zh": "支持按当前用户安装。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "PATH",
+          "action": "append",
+          "value": "VS Code command directory",
+          "backupHint": { "en": "Back up PATH before enabling the code command.", "zh": "启用 code 命令前备份 PATH。" },
+          "rollback": { "en": "Remove VS Code command directory from PATH.", "zh": "从 PATH 中移除 VS Code 命令目录。" }
+        }
+      ]
+    },
+    {
+      "id": "java",
+      "category": "languages",
+      "name": { "en": "Java", "zh": "Java" },
+      "summary": { "en": "OpenJDK distribution for JVM development.", "zh": "用于 JVM 开发的 OpenJDK 发行版。" },
+      "homepage": "https://adoptium.net/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "jvm", "jdk"],
+      "versions": [{ "id": "21", "label": "21 LTS", "default": true }, { "id": "17", "label": "17 LTS" }],
+      "sources": [
+        { "kind": "official", "url": "https://adoptium.net/temurin/releases/" },
+        { "kind": "mirror", "url": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "java", "args": ["-version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "temurin",
+          "platforms": ["windows", "macos", "linux"],
+          "kind": "download",
+          "title": { "en": "Install Eclipse Temurin JDK", "zh": "安装 Eclipse Temurin JDK" },
+          "url": "https://adoptium.net/temurin/releases/",
+          "mirrorUrl": "https://mirrors.tuna.tsinghua.edu.cn/Adoptium/",
+          "checksum": "Adoptium checksum and signature",
+          "command": "java",
+          "args": ["-version"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "System-wide JDK installation and JAVA_HOME changes may require elevation.", "zh": "系统级 JDK 安装和 JAVA_HOME 修改可能需要提权。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "JAVA_HOME",
+          "action": "set",
+          "value": "Selected JDK directory",
+          "backupHint": { "en": "Record previous JAVA_HOME before replacing it.", "zh": "替换前记录原 JAVA_HOME。" },
+          "rollback": { "en": "Restore the previous JAVA_HOME value.", "zh": "恢复原 JAVA_HOME 值。" }
+        }
+      ]
+    },
+    {
+      "id": "go",
+      "category": "languages",
+      "name": { "en": "Go", "zh": "Go" },
+      "summary": { "en": "Official Go toolchain.", "zh": "官方 Go 工具链。" },
+      "homepage": "https://go.dev/dl/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "compiler"],
+      "versions": [{ "id": "stable", "label": "stable", "default": true }],
+      "sources": [
+        { "kind": "official", "url": "https://go.dev/dl/" },
+        { "kind": "mirror", "url": "https://mirrors.aliyun.com/golang/" }
+      ],
+      "detection": [
+        { "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "go", "args": ["version"], "sourceHint": "PATH" }
+      ],
+      "dependencies": [],
+      "installSteps": [
+        {
+          "id": "go-official",
+          "platforms": ["windows", "macos", "linux"],
+          "kind": "download",
+          "title": { "en": "Download official Go archive or installer", "zh": "下载官方 Go 归档或安装器" },
+          "url": "https://go.dev/dl/",
+          "mirrorUrl": "https://mirrors.aliyun.com/golang/",
+          "checksum": "go.dev SHA256 checksum",
+          "command": "go",
+          "args": ["version"],
+          "source": "official",
+          "permissions": { "requiresAdmin": true, "reason": { "en": "Default installation path is system-wide.", "zh": "默认安装路径为系统范围。" } }
+        }
+      ],
+      "configSteps": [
+        {
+          "target": "GOPATH/PATH",
+          "action": "append",
+          "value": "$HOME/go/bin",
+          "backupHint": { "en": "Back up shell profile before adding Go paths.", "zh": "添加 Go 路径前备份 shell profile。" },
+          "rollback": { "en": "Remove Go bin directories from PATH.", "zh": "从 PATH 中移除 Go bin 目录。" }
+        }
+      ]
+    },
+    {
+      "id": "dotnet",
+      "category": "languages",
+      "name": { "en": ".NET SDK", "zh": ".NET SDK" },
+      "summary": { "en": "Microsoft .NET SDK for C#, F#, and ASP.NET.", "zh": "用于 C#、F# 和 ASP.NET 的 Microsoft .NET SDK。" },
+      "homepage": "https://dotnet.microsoft.com/download",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "sdk", "csharp"],
+      "versions": [{ "id": "8", "label": "8 LTS", "default": true }, { "id": "9", "label": "9" }],
+      "sources": [{ "kind": "official", "url": "https://dotnet.microsoft.com/download" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "dotnet", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "dotnet-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install official .NET SDK", "zh": "安装官方 .NET SDK" }, "url": "https://dotnet.microsoft.com/download", "mirrorUrl": "https://dotnetcli.azureedge.net/dotnet/", "checksum": "Microsoft checksum/signature", "command": "dotnet", "args": ["--info"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "Default SDK installation is system-wide.", "zh": "默认 SDK 安装为系统范围。" } } }
+      ],
+      "configSteps": []
+    },
+    {
+      "id": "php",
+      "category": "languages",
+      "name": { "en": "PHP", "zh": "PHP" },
+      "summary": { "en": "PHP runtime and CLI.", "zh": "PHP 运行时和 CLI。" },
+      "homepage": "https://www.php.net/downloads.php",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "web"],
+      "versions": [{ "id": "8.3", "label": "8.3", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://www.php.net/downloads.php" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "php", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "php-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install PHP runtime", "zh": "安装 PHP 运行时" }, "url": "https://www.php.net/downloads.php", "mirrorUrl": "https://www.php.net/distributions/", "checksum": "PHP release signature", "command": "php", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "Can be unpacked into a user-owned tool directory.", "zh": "可解压到用户工具目录。" } } }
+      ],
+      "configSteps": [{ "target": "PATH", "action": "append", "value": "$ELVPATH_TOOLS/php", "backupHint": { "en": "Back up PATH before adding PHP.", "zh": "添加 PHP 前备份 PATH。" }, "rollback": { "en": "Remove PHP from PATH.", "zh": "从 PATH 中移除 PHP。" } }]
+    },
+    {
+      "id": "ruby",
+      "category": "languages",
+      "name": { "en": "Ruby", "zh": "Ruby" },
+      "summary": { "en": "Ruby runtime and gem tooling.", "zh": "Ruby 运行时和 gem 工具。" },
+      "homepage": "https://www.ruby-lang.org/en/downloads/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["language", "gem"],
+      "versions": [{ "id": "3.3", "label": "3.3", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://www.ruby-lang.org/en/downloads/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "ruby", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "ruby-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install Ruby runtime", "zh": "安装 Ruby 运行时" }, "url": "https://www.ruby-lang.org/en/downloads/", "mirrorUrl": "https://cache.ruby-lang.org/pub/ruby/", "checksum": "Ruby release checksum", "command": "ruby", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "Can install per-user through a version manager.", "zh": "可通过版本管理器按用户安装。" } } }
+      ],
+      "configSteps": []
+    },
+    {
+      "id": "flutter",
+      "category": "mobile",
+      "name": { "en": "Flutter", "zh": "Flutter" },
+      "summary": { "en": "Flutter SDK for mobile, desktop, and web apps.", "zh": "用于移动、桌面和 Web 应用的 Flutter SDK。" },
+      "homepage": "https://docs.flutter.dev/get-started/install",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["mobile", "dart", "sdk"],
+      "versions": [{ "id": "stable", "label": "stable", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://docs.flutter.dev/get-started/install" }, { "kind": "mirror", "url": "https://mirrors.tuna.tsinghua.edu.cn/flutter/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "flutter", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": ["git"],
+      "installSteps": [
+        { "id": "flutter-sdk", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install Flutter SDK", "zh": "安装 Flutter SDK" }, "url": "https://docs.flutter.dev/get-started/install", "mirrorUrl": "https://mirrors.tuna.tsinghua.edu.cn/flutter/", "checksum": "Flutter release checksum", "command": "flutter", "args": ["doctor"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "SDK can live in a user-owned directory.", "zh": "SDK 可放在用户目录。" } } }
+      ],
+      "configSteps": [{ "target": "PATH", "action": "append", "value": "$ELVPATH_TOOLS/flutter/bin", "backupHint": { "en": "Back up PATH before adding Flutter.", "zh": "添加 Flutter 前备份 PATH。" }, "rollback": { "en": "Remove Flutter from PATH.", "zh": "从 PATH 中移除 Flutter。" } }]
+    },
+    {
+      "id": "android-studio",
+      "category": "mobile",
+      "name": { "en": "Android Studio", "zh": "Android Studio" },
+      "summary": { "en": "Official Android IDE and SDK manager.", "zh": "官方 Android IDE 和 SDK 管理器。" },
+      "homepage": "https://developer.android.com/studio",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["android", "ide", "sdk"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://developer.android.com/studio" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "studio", "args": ["--version"], "sourceHint": "PATH/app" }],
+      "dependencies": ["java"],
+      "installSteps": [
+        { "id": "android-studio", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install Android Studio", "zh": "安装 Android Studio" }, "url": "https://developer.android.com/studio", "mirrorUrl": "https://redirector.gvt1.com/edgedl/android/studio/", "checksum": "Google release checksum", "command": "studio", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "IDE and SDK components may install system integrations.", "zh": "IDE 和 SDK 组件可能安装系统集成。" } } }
+      ],
+      "configSteps": [{ "target": "ANDROID_HOME", "action": "set", "value": "Android SDK directory", "backupHint": { "en": "Record previous Android SDK variables.", "zh": "记录原 Android SDK 变量。" }, "rollback": { "en": "Restore previous Android SDK variables.", "zh": "恢复原 Android SDK 变量。" } }]
+    },
+    {
+      "id": "postgresql",
+      "category": "databases",
+      "name": { "en": "PostgreSQL", "zh": "PostgreSQL" },
+      "summary": { "en": "PostgreSQL server and psql client.", "zh": "PostgreSQL 服务端和 psql 客户端。" },
+      "homepage": "https://www.postgresql.org/download/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["database", "sql"],
+      "versions": [{ "id": "16", "label": "16", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://www.postgresql.org/download/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "psql", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "postgresql-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install PostgreSQL from official packages", "zh": "从官方包安装 PostgreSQL" }, "url": "https://www.postgresql.org/download/", "mirrorUrl": "https://mirrors.tuna.tsinghua.edu.cn/postgresql/", "checksum": "PostgreSQL package signature", "command": "psql", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "Database service installation needs elevated privileges.", "zh": "数据库服务安装需要提权。" } } }
+      ],
+      "configSteps": []
+    },
+    {
+      "id": "redis",
+      "category": "databases",
+      "name": { "en": "Redis", "zh": "Redis" },
+      "summary": { "en": "Redis server and CLI.", "zh": "Redis 服务端和 CLI。" },
+      "homepage": "https://redis.io/download/",
+      "supportedPlatforms": ["macos", "linux", "windows"],
+      "tags": ["database", "cache"],
+      "versions": [{ "id": "stable", "label": "stable", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://redis.io/download/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "redis-server", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "redis-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install Redis", "zh": "安装 Redis" }, "url": "https://redis.io/download/", "mirrorUrl": "https://download.redis.io/releases/", "checksum": "Redis release checksum", "command": "redis-server", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "Service registration may require elevation.", "zh": "注册服务可能需要提权。" } } }
+      ],
+      "configSteps": []
+    },
+    {
+      "id": "kubectl",
+      "category": "containers",
+      "name": { "en": "kubectl", "zh": "kubectl" },
+      "summary": { "en": "Kubernetes command-line client.", "zh": "Kubernetes 命令行客户端。" },
+      "homepage": "https://kubernetes.io/docs/tasks/tools/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["kubernetes", "cli"],
+      "versions": [{ "id": "stable", "label": "stable", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://kubernetes.io/docs/tasks/tools/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "kubectl", "args": ["version", "--client"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "kubectl-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Download kubectl binary", "zh": "下载 kubectl 二进制" }, "url": "https://kubernetes.io/docs/tasks/tools/", "mirrorUrl": "https://dl.k8s.io/", "checksum": "Kubernetes SHA256 checksum", "command": "kubectl", "args": ["version", "--client"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "Can install into a user-owned bin directory.", "zh": "可安装到用户 bin 目录。" } } }
+      ],
+      "configSteps": [{ "target": "PATH", "action": "append", "value": "$ELVPATH_TOOLS/kubectl", "backupHint": { "en": "Back up PATH before adding kubectl.", "zh": "添加 kubectl 前备份 PATH。" }, "rollback": { "en": "Remove kubectl from PATH.", "zh": "从 PATH 中移除 kubectl。" } }]
+    },
+    {
+      "id": "terraform",
+      "category": "devops",
+      "name": { "en": "Terraform", "zh": "Terraform" },
+      "summary": { "en": "Infrastructure as code CLI.", "zh": "基础设施即代码 CLI。" },
+      "homepage": "https://developer.hashicorp.com/terraform/downloads",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["iac", "cli"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://developer.hashicorp.com/terraform/downloads" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "terraform", "args": ["version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "terraform-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Download Terraform binary", "zh": "下载 Terraform 二进制" }, "url": "https://developer.hashicorp.com/terraform/downloads", "mirrorUrl": "https://releases.hashicorp.com/terraform/", "checksum": "HashiCorp checksum and signature", "command": "terraform", "args": ["version"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "Can install into a user-owned bin directory.", "zh": "可安装到用户 bin 目录。" } } }
+      ],
+      "configSteps": [{ "target": "PATH", "action": "append", "value": "$ELVPATH_TOOLS/terraform", "backupHint": { "en": "Back up PATH before adding Terraform.", "zh": "添加 Terraform 前备份 PATH。" }, "rollback": { "en": "Remove Terraform from PATH.", "zh": "从 PATH 中移除 Terraform。" } }]
+    },
+    {
+      "id": "aws-cli",
+      "category": "cloud",
+      "name": { "en": "AWS CLI", "zh": "AWS CLI" },
+      "summary": { "en": "Amazon Web Services command-line interface.", "zh": "Amazon Web Services 命令行界面。" },
+      "homepage": "https://aws.amazon.com/cli/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["cloud", "aws"],
+      "versions": [{ "id": "v2", "label": "v2", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://aws.amazon.com/cli/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "aws", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "aws-cli-v2", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install AWS CLI v2", "zh": "安装 AWS CLI v2" }, "url": "https://aws.amazon.com/cli/", "mirrorUrl": "https://awscli.amazonaws.com/", "checksum": "AWS CLI signature", "command": "aws", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "Default installer writes to system locations.", "zh": "默认安装器写入系统位置。" } } }
+      ],
+      "configSteps": []
+    },
+    {
+      "id": "conda",
+      "category": "ai-data",
+      "name": { "en": "Miniconda", "zh": "Miniconda" },
+      "summary": { "en": "Minimal Conda distribution for data science environments.", "zh": "用于数据科学环境的最小 Conda 发行版。" },
+      "homepage": "https://docs.conda.io/en/latest/miniconda.html",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["python", "data", "conda"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://docs.conda.io/en/latest/miniconda.html" }, { "kind": "mirror", "url": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "conda", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "miniconda", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install Miniconda", "zh": "安装 Miniconda" }, "url": "https://docs.conda.io/en/latest/miniconda.html", "mirrorUrl": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/miniconda/", "checksum": "Miniconda checksum", "command": "conda", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": false, "reason": { "en": "Supports user-local installation.", "zh": "支持当前用户安装。" } } }
+      ],
+      "configSteps": [{ "target": "conda config", "action": "set", "value": "channels and proxy settings", "backupHint": { "en": "Back up .condarc before changing channels.", "zh": "修改 channel 前备份 .condarc。" }, "rollback": { "en": "Restore previous .condarc.", "zh": "恢复原 .condarc。" } }]
+    },
+    {
+      "id": "cmake",
+      "category": "devops",
+      "name": { "en": "CMake", "zh": "CMake" },
+      "summary": { "en": "Cross-platform build system generator.", "zh": "跨平台构建系统生成器。" },
+      "homepage": "https://cmake.org/download/",
+      "supportedPlatforms": ["windows", "macos", "linux"],
+      "tags": ["build", "c++"],
+      "versions": [{ "id": "latest", "label": "latest", "default": true }],
+      "sources": [{ "kind": "official", "url": "https://cmake.org/download/" }],
+      "detection": [{ "platforms": ["windows", "macos", "linux"], "kind": "path-command", "program": "cmake", "args": ["--version"], "sourceHint": "PATH" }],
+      "dependencies": [],
+      "installSteps": [
+        { "id": "cmake-official", "platforms": ["windows", "macos", "linux"], "kind": "download", "title": { "en": "Install CMake", "zh": "安装 CMake" }, "url": "https://cmake.org/download/", "mirrorUrl": "https://cmake.org/files/", "checksum": "CMake checksum/signature", "command": "cmake", "args": ["--version"], "source": "official", "permissions": { "requiresAdmin": true, "reason": { "en": "Default installer modifies system PATH.", "zh": "默认安装器会修改系统 PATH。" } } }
+      ],
+      "configSteps": [{ "target": "PATH", "action": "append", "value": "CMake bin directory", "backupHint": { "en": "Back up PATH before adding CMake.", "zh": "添加 CMake 前备份 PATH。" }, "rollback": { "en": "Remove CMake from PATH.", "zh": "从 PATH 中移除 CMake。" } }]
+    }
+  ]
+}
